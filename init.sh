@@ -7,21 +7,29 @@ project_root=~/HTB      #    Edit this variable if your notes are somewhere else
                         #
 #########################
 
+WHITE='\033[0;37m'
+RESET='\033[0m'
+RED_B='\033[1;31m'
+GREEN_B='\033[1;32m'
+WHITE_B='\033[1;37m'
+CYAN_B='\033[1;36m'
 
 #this section performs basic checks 
 
-if [ "$#" -ne 1 ]; then
+if [ "$#" \< 1 ]; then
 	
-	echo -e "\nError: missing parameters.\n"
-	echo -e "Usage: $0 <box name>"
+	echo -e "${WHITE}"
+	echo -e "${RED_B}Error: ${NORMAL} ${WHITE} missing parameters."
+	echo -e "${GREEN_B}Usage: ${NORMAL} ${WHITE} $0 <box name>\n${RESET}}"
 	exit 1
 fi
 
 
 if [ ! -d $project_root ]; then
 	
-	read -p "Request: \"$project_root\" folder not found, create now? (y/n) " -n 1 -r create
-	echo
+	echo -e "${GREEN_B}"
+	read -p "Request: \"$project_root\" folder not found, create now? (y/n): "  -n 1 -r create
+		echo -e ${WHITE}
 
 	if [ $create == "y" ] || [ $create == "Y" ]; then
 
@@ -29,11 +37,11 @@ if [ ! -d $project_root ]; then
 	
 	elif [ $create == "n" ] || [ $create == "N" ]; then
 
-		echo "Quitting."
+		echo -e "${RED_B}Quitting.${RESET}\n"
 		exit 0
 
 	else
-		echo -e "ERROR: invalid selection \"$create\"... \n QUITTING."
+		echo -e "\n${RED_B}ERROR:${WHITE} invalid selection \"$create\"... \n${RED_B}QUITTING.${RESET}\n"
 		exit 1
 	fi
 fi
@@ -52,15 +60,20 @@ directory_list=("nmap" "report" "machine_files" "www" "exploits")       #  Edit 
 
 if [ ! -d $box_home ]; then
 
-	echo " - creating directory \"$1\" in \"$project_root\""
+	echo -e "\n${GREEN_B} - creating directory \"$1\" in \"$project_root\""
 	mkdir $box_home
 else
-	echo -e "ERROR: directory \"$1\" already exists in \"$project_root\"! \n QUITTING."
+	echo -e "${RED_B}ERROR: ${RESET}directory \"$1\" already exists in \"$project_root\"! \n${RED_B}QUITTING.${RESET}"
 	exit 1
 fi
 
+echo 
+
 for i in ${directory_list[@]}; do
        
-	echo " - creating $box_home$i"
+	echo -e "${WHITE_B} - creating $box_home$i"
 	mkdir $box_home$i
+	sleep 0.1
 done
+
+echo -e "\n${CYAN_B}Done.${RESET}\n"
