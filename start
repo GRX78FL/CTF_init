@@ -81,7 +81,7 @@ function start_nmap(){
 			grep \"open\"`" | 												# grep for lines with "open"
 			tee /dev/tty | 													# print list of ports and service name
 			cut -d '/' -f1 |												# strip lines to get only the numbers
-		       	paste -s -d "," -											# format results to nmap argument format 
+		       	paste -s -d "," -												# format results to nmap argument format 
 		)
 
 	echo -e "\n${CYAN_B}>> Starting enumeration of discovered services"
