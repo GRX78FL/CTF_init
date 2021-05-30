@@ -78,10 +78,10 @@ function start_nmap(){
 	echo -e "${GREEN_B}Open ports on ${WHITE_B}$1:\n${RESET}"
 
 	OPEN_PORTS=$(echo -e "`nmap $1 -p- --open -oA $box_home\"nmap/open\"|   # find open ports
-			grep \"open\"`" | 												# grep for lines with "open"
-			tee /dev/tty | 													# print list of ports and service name
-			cut -d '/' -f1 |												# strip lines to get only the numbers
-		       	paste -s -d "," -												# format results to nmap argument format 
+			grep \"open\"`" | 					# grep for lines with open
+			tee /dev/tty | 						# print list of ports and service name
+			cut -d '/' -f1 |					# strip lines to get only the numbers
+		       	paste -s -d "," -					# format results to nmap argument format 
 		)
 
 	echo -e "\n${CYAN_B}>> Starting enumeration of discovered services"
@@ -111,7 +111,7 @@ function is_valid_ip() {
 	fi
 }
 
-# This section checks the arguments list (Ececution starts here) 
+# This section checks the arguments list (Execution starts here) 
 
 if [ "$#" == 1 ]; then 
 
