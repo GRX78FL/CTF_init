@@ -1,12 +1,12 @@
 # CTF_init
-CTF_init is a simple bash script that creates a directory tree for your CTF notes. 
+CTF_init is a simple bash script that creates a directory tree for your CTF notes and starts basic enumeration for you.
 
 ## usage
 
 ```bash
 
-chmod +x init.sh
-./init.sh <box name>
+chmod +x start
+./start <box name> <IP (optional)>
 
 ```
 
