@@ -85,7 +85,7 @@ function start_nmap(){
 		)
 
 	echo -e "\n${CYAN_B}>> Starting enumeration of discovered services"
-	echo -e "${WHITE_B}   this could take a while, sit tight!${RESET}"
+	echo -e "${WHITE_B}   this could take a while, sit tight!\n${RESET}"
 
 	nmap $1 -sC -sV -p$OPEN_PORTS -q -4 -oA $box_home"nmap/services"  &> /dev/null
 	
@@ -94,18 +94,23 @@ function start_nmap(){
 
 	echo -e "\n${CYAN_B}>> Scan done. Opening resuls for review...\n${RESET}"
 	sleep 1
+	
+	while IFS= read -r line; do 
+		echo "   $line" 
+		sleep 0.1
+	done < 	$box_home"nmap/services.nmap"
 
-	less $box_home"nmap/services.nmap"
+	echo -e "${CYAN_B}\nDone.${RESET}"
 }
 
 function is_valid_ip() {
 
-	if [[ $1 =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+if [[ $1 =~ ^([0-9]{1,3}[\.]){3}([0-9]{1,3})$ ]] || [[ `dig $1 +short` ]]; then
 
 		start_nmap $1
 	else
 	
-		echo -e "${RED_B}Invalid IP format:${WHITE_B} \"$2\" is not a valid IP address!${RESET}"
+		echo -e "${RED_B}Invalid IP or HostName:${WHITE_B} cannot scan '$1'!${RESET}"
 		echo -e "${CYAN_B}Aborting nmap scan!${RESET}\n"
 		exit 1
 	fi
@@ -113,15 +118,14 @@ function is_valid_ip() {
 
 # This section checks the arguments list (Execution starts here) 
 
-if [ "$#" == 1 ]; then 
+if [[ $* == "-h" ]] || [[ $* == "-help"  ]] || [[ $* == "--help" ]]; then
 
-	if [ $1 == "-h" ] || [ $1 == "--help" ]; then
+	echo -e "\n${GREEN_B}Usage: ${CYAN_B} $0 <box name> <optional: IP>\n${RESET}"
+	exit
+fi
 
-		echo -e "\n${GREEN_B}Usage: ${CYAN_B} $0 <box name> <optional: IP>\n${RESET}"
-		exit
-	fi
+if [ "$#" == 1 ]; then
 
-	export box_name=$1
 	build_tree $1
 	exit
 
