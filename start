@@ -92,7 +92,7 @@ function start_nmap(){
 	echo -e "${WHITE}   - saving results in " $box_home"nmap/${RESET}"
 	sleep 1
 
-	echo -e "\n${CYAN_B}>> Scan done. Opening resuls for review...\n${RESET}"
+	echo -e "\n${CYAN_B}>> Scan done. Opening results for review...\n${RESET}"
 	sleep 1
 	
 	while IFS= read -r line; do 
